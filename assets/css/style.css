@@ -1,0 +1,319 @@
+/* ═══════════════════════════════════════════════════════
+   AR BUSINESS CARD — style.css
+   Andronikus Pardamean Sihotang | D4 TRPL
+   ═══════════════════════════════════════════════════════ */
+
+/* ── Reset & Base ── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --clr-accent:      #7c3aed;
+  --clr-accent-2:    #06b6d4;
+  --clr-accent-glow: rgba(124, 58, 237, 0.55);
+  --clr-surface:     rgba(8, 8, 18, 0.88);
+  --clr-surface-lt:  rgba(255, 255, 255, 0.06);
+  --clr-border:      rgba(255, 255, 255, 0.12);
+  --clr-text:        #f0f0ff;
+  --clr-muted:       rgba(200, 200, 220, 0.65);
+  --radius-pill:     9999px;
+  --radius-card:     20px;
+  --ease:            cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-glow:     0 0 28px rgba(124, 58, 237, 0.45),
+                     0 0 56px rgba(6, 182, 212, 0.15);
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #000;
+  font-family: "Inter", sans-serif;
+  color: var(--clr-text);
+}
+
+/* ═══════════════════════════════════════════════════════
+   FIX KAMERA GELAP
+   AR.js menyuntikkan sebuah <video> ke dalam DOM.
+   Elemen ini harus terlihat di belakang canvas A-Frame.
+   ═══════════════════════════════════════════════════════ */
+
+/* Video feed dari kamera */
+video {
+  position: fixed !important;
+  top:      0 !important;
+  left:     0 !important;
+  width:    100% !important;
+  height:   100% !important;
+  object-fit: cover !important;
+  z-index:  1 !important;       /* tepat di atas background hitam */
+  background: transparent !important;
+}
+
+/* Canvas WebGL A-Frame — transparan agar video terlihat */
+canvas.a-canvas,
+.a-canvas {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2 !important;        /* di atas video */
+  background: transparent !important;
+}
+
+/* Scene A-Frame itu sendiri */
+a-scene {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  background: transparent !important;
+}
+
+/* ═══════════════════════════════════════════════════════
+   HEADER OVERLAY
+   ═══════════════════════════════════════════════════════ */
+#header-overlay {
+  position: fixed;
+  top:   0;
+  left:  0;
+  right: 0;
+  z-index: 100;
+  padding: 16px 24px 12px;
+  background: linear-gradient(to bottom, rgba(4, 4, 14, 0.96) 55%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--clr-border);
+  animation: slideDown 0.55s var(--ease) both;
+}
+
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.header-brand { display: flex; flex-direction: column; gap: 2px; }
+
+.header-brand .label {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
+  color: var(--clr-accent-2);
+}
+
+.header-brand h1 {
+  font-family: "Orbitron", sans-serif;
+  font-size: clamp(0.78rem, 2vw, 1rem);
+  font-weight: 900;
+  background: linear-gradient(90deg, var(--clr-accent), var(--clr-accent-2));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 0.07em;
+}
+
+/* ===== MODE PRESENTASI ===== */
+
+#header-overlay{
+    display:none;
+}
+
+#social-overlay{
+    display:none;
+}
+
+.live-badge{
+    display:none;
+}
+
+/* scan guide lebih modern */
+
+.scan-frame{
+    width:220px;
+    height:220px;
+}
+
+.scan-label{
+    font-size:0.75rem;
+    color:#06b6d4;
+}
+
+/* Live badge */
+.live-badge {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--clr-muted);
+  background: var(--clr-surface-lt);
+  border: 1px solid var(--clr-border);
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(8px);
+}
+
+.live-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+  animation: pulseDot 1.5s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.45; transform: scale(0.65); }
+}
+
+/* ═══════════════════════════════════════════════════════
+   SOCIAL BUTTON ROW
+   ═══════════════════════════════════════════════════════ */
+#social-overlay {
+  position: fixed;
+  top:  76px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  gap: 9px;
+  flex-wrap: nowrap;
+  animation: slideDown 0.6s 0.12s var(--ease) both;
+}
+
+.social-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 15px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--clr-border);
+  background: var(--clr-surface);
+  color: var(--clr-text);
+  text-decoration: none;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: all 0.28s var(--ease);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.social-btn:hover {
+  background: rgba(124, 58, 237, 0.28);
+  border-color: var(--clr-accent);
+  box-shadow: var(--shadow-glow);
+  transform: translateY(-3px);
+  color: #fff;
+}
+
+.social-btn:active { transform: translateY(-1px); }
+
+.social-btn svg {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  fill: currentColor;
+}
+
+/* ═══════════════════════════════════════════════════════
+   SCAN GUIDE (tengah layar saat marker belum terdeteksi)
+   ═══════════════════════════════════════════════════════ */
+#marker-status {
+  position: fixed;
+  top:  50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 90;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  transition: opacity 0.4s ease;
+}
+
+.scan-frame {
+  width: 190px;
+  height: 190px;
+  position: relative;
+}
+
+/* Empat sudut frame */
+.scan-frame::before,
+.scan-frame::after,
+.scan-frame span::before,
+.scan-frame span::after {
+  content: "";
+  position: absolute;
+  width: 34px;
+  height: 34px;
+  border-color: var(--clr-accent-2);
+  border-style: solid;
+  border-width: 0;
+}
+
+.scan-frame::before    { top:0;    left:0;  border-top-width:3px;    border-left-width:3px;   border-radius:4px 0 0 0; }
+.scan-frame::after     { top:0;    right:0; border-top-width:3px;    border-right-width:3px;  border-radius:0 4px 0 0; }
+.scan-frame span::before { bottom:0; left:0;  border-bottom-width:3px; border-left-width:3px;   border-radius:0 0 0 4px; }
+.scan-frame span::after  { bottom:0; right:0; border-bottom-width:3px; border-right-width:3px;  border-radius:0 0 4px 0; }
+
+.scan-line {
+  position: absolute;
+  top:  0;
+  left: 8px;
+  right:8px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--clr-accent-2), transparent);
+  animation: scanMove 2.4s ease-in-out infinite;
+  box-shadow: 0 0 8px var(--clr-accent-2);
+}
+
+@keyframes scanMove {
+  0%,100% { top: 8px;             opacity: 0; }
+  10%     { opacity: 1; }
+  90%     { opacity: 1; }
+  50%     { top: calc(100% - 10px); }
+}
+
+.scan-label {
+  font-family: "Orbitron", sans-serif;
+  font-size: 0.62rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--clr-accent-2);
+  text-shadow: 0 0 14px var(--clr-accent-2);
+  animation: blinkText 1.8s ease-in-out infinite;
+}
+
+@keyframes blinkText {
+  0%,100% { opacity: 1; }
+  50%     { opacity: 0.3; }
+}
+
+/* #info-overlay dihapus — semua info tampil dalam AR scene */
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translate(-50%, 28px); }
+  to   { opacity: 1; transform: translate(-50%, 0); }
+}
+
+/* ═══════════════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  #social-overlay { gap: 6px; top: 72px; }
+  .social-btn { padding: 7px 11px; font-size: 0.64rem; }
+  .social-btn span { display: none; }
+}
